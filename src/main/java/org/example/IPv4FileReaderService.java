@@ -40,7 +40,6 @@ public class IPv4FileReaderService implements Runnable {
                         octetArrInd = 0;
                     }
                 } else if (!Arrays.equals(octetArr, getDefaultOctetArr())) {
-                    //TODO записывается 0, так как после /r идёт /n
                     ipDecimalNumber += getDecimalNumberOfOctet(getOctet(octetArr), octetLeft);
                     octetArr = getDefaultOctetArr();
                     octetArrInd = 0;
