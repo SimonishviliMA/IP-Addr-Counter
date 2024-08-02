@@ -1,6 +1,7 @@
 package org.example;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class IPv4FileReaderService implements Runnable {
 
@@ -9,7 +10,6 @@ public class IPv4FileReaderService implements Runnable {
     private static final int MIN_NUMERIC_CHAR_VALUE = 48;
     private static final int MAX_NUMERIC_CHAR_VALUE = 57;
     private static final int DOT_CHAR_VALUE = 46;
-    private static final int NEXT_LINE_CHAR_VALUE = 10;
 
     private final TransportBlockingQueue queue = TransportBlockingQueue.getInstance();
 
@@ -29,7 +29,8 @@ public class IPv4FileReaderService implements Runnable {
             int[] octetArr = getDefaultOctetArr();
             int octetArrInd = 0;
             int octetLeft = 3;
-            while ((ch = bis.read()) != -1) {
+            do {
+                ch = bis.read();
                 if ((ch >= MIN_NUMERIC_CHAR_VALUE && ch <= MAX_NUMERIC_CHAR_VALUE) || ch == DOT_CHAR_VALUE) {
                     if (ch != DOT_CHAR_VALUE) {
                         octetArr[octetArrInd++] = ch;
@@ -38,7 +39,7 @@ public class IPv4FileReaderService implements Runnable {
                         octetArr = getDefaultOctetArr();
                         octetArrInd = 0;
                     }
-                } else {
+                } else if (!Arrays.equals(octetArr, getDefaultOctetArr())) {
                     //TODO записывается 0, так как после /r идёт /n
                     ipDecimalNumber += getDecimalNumberOfOctet(getOctet(octetArr), octetLeft);
                     octetArr = getDefaultOctetArr();
@@ -47,7 +48,7 @@ public class IPv4FileReaderService implements Runnable {
                     ipDecimalNumber = 0;
                     octetLeft = 3;
                 }
-            }
+            } while (ch != -1);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
