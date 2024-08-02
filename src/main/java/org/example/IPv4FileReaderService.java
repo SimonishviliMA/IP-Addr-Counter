@@ -9,6 +9,7 @@ public class IPv4FileReaderService implements Runnable {
     private static final int MIN_NUMERIC_CHAR_VALUE = 48;
     private static final int MAX_NUMERIC_CHAR_VALUE = 57;
     private static final int DOT_CHAR_VALUE = 46;
+    private static final int NEXT_LINE_CHAR_VALUE = 10;
 
     private final TransportBlockingQueue queue = TransportBlockingQueue.getInstance();
 
@@ -17,6 +18,7 @@ public class IPv4FileReaderService implements Runnable {
     public IPv4FileReaderService(FileInputStream src) {
         this.src = src;
     }
+
 
     private void startRead() {
 
@@ -37,13 +39,13 @@ public class IPv4FileReaderService implements Runnable {
                         octetArrInd = 0;
                     }
                 } else {
+                    //TODO записывается 0, так как после /r идёт /n
                     ipDecimalNumber += getDecimalNumberOfOctet(getOctet(octetArr), octetLeft);
                     octetArr = getDefaultOctetArr();
                     octetArrInd = 0;
                     queue.put(ipDecimalNumber);
                     ipDecimalNumber = 0;
                     octetLeft = 3;
-
                 }
             }
         } catch (IOException | InterruptedException e) {

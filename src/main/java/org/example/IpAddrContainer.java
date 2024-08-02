@@ -36,11 +36,15 @@ public class IpAddrContainer {
     }
 
     public void set(long bitInd) {
-        int indOfArray = (int) Math.ceil((float) bitInd / maxSizeOfBitSet) - 1;
+        int indOfArray = 0;
+        if (bitInd != 0) {
+            indOfArray = (int) Math.ceil((double) (bitInd / maxSizeOfBitSet));
+        }
         if (indOfArray > bits.length) {
             //TODO выход за пределы массива битов
             throw new IndexOutOfBoundsException();
         }
+
         int indOfBitSet = (int) (bitInd - (maxSizeOfBitSet * indOfArray));
         if (bits.length == indOfArray) {
             if (indOfBitSet > minSizeOfBitSet) {
