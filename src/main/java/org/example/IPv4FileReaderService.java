@@ -6,10 +6,10 @@ import java.util.Arrays;
 public class IPv4FileReaderService implements Runnable {
 
     private static final int MAX_8_BIT_VALUE = 256;
-    private static final int MAX_LENGTH_LINE_BYTE_SIZE = 17;
     private static final int MIN_NUMERIC_CHAR_VALUE = 48;
     private static final int MAX_NUMERIC_CHAR_VALUE = 57;
     private static final int DOT_CHAR_VALUE = 46;
+    private static long countOfElems = 0;
 
     private final TransportBlockingQueue queue = TransportBlockingQueue.getInstance();
 
@@ -23,7 +23,7 @@ public class IPv4FileReaderService implements Runnable {
     private void startRead() {
 
         //TODO max size of bufferedInputStream
-        try (BufferedInputStream bis = new BufferedInputStream(src, MAX_LENGTH_LINE_BYTE_SIZE)) {
+        try (BufferedInputStream bis = new BufferedInputStream(src)) {
             int ch;
             long ipDecimalNumber = 0;
             int[] octetArr = getDefaultOctetArr();
@@ -46,6 +46,9 @@ public class IPv4FileReaderService implements Runnable {
                     queue.put(ipDecimalNumber);
                     ipDecimalNumber = 0;
                     octetLeft = 3;
+                    if (countOfElems++ % (double) (Integer.MAX_VALUE / 2) == 0) {
+                        System.out.println(countOfElems);
+                    }
                 }
             } while (ch != -1);
         } catch (IOException | InterruptedException e) {

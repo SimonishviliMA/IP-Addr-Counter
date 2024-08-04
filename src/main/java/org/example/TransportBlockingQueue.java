@@ -1,14 +1,13 @@
 package org.example;
 
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class TransportBlockingQueue {
 
-    private static final int MAX_BUFFER_SIZE = 30;
     private static TransportBlockingQueue instance = null;
 
-    private final BlockingQueue<Long> queue = new ArrayBlockingQueue<>(MAX_BUFFER_SIZE);
+    private final BlockingQueue<Long> queue = new LinkedBlockingQueue<>();
 
 
     public static synchronized TransportBlockingQueue getInstance() {
