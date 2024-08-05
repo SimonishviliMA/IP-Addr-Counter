@@ -9,7 +9,7 @@ public class IPv4FileReaderService implements Runnable {
     private static final int MIN_NUMERIC_CHAR_VALUE = 48;
     private static final int MAX_NUMERIC_CHAR_VALUE = 57;
     private static final int DOT_CHAR_VALUE = 46;
-    private static long countOfElems = 0;
+    private static long countOfElements = 0;
 
     private final TransportBlockingQueue queue = TransportBlockingQueue.getInstance();
 
@@ -22,7 +22,6 @@ public class IPv4FileReaderService implements Runnable {
 
     private void startRead() {
 
-        //TODO max size of bufferedInputStream
         try (BufferedInputStream bis = new BufferedInputStream(src)) {
             int ch;
             long ipDecimalNumber = 0;
@@ -46,8 +45,8 @@ public class IPv4FileReaderService implements Runnable {
                     queue.put(ipDecimalNumber);
                     ipDecimalNumber = 0;
                     octetLeft = 3;
-                    if (countOfElems++ % (double) (Integer.MAX_VALUE / 2) == 0) {
-                        System.out.println(countOfElems);
+                    if (countOfElements++ % (double) (Integer.MAX_VALUE / 2) == 0) {
+                        System.out.println(countOfElements);
                     }
                 }
             } while (ch != -1);
@@ -80,6 +79,7 @@ public class IPv4FileReaderService implements Runnable {
 
     @Override
     public void run() {
+        System.out.println(this.getClass().getSimpleName() + " : " + Thread.currentThread().getName());
         startRead();
     }
 }
