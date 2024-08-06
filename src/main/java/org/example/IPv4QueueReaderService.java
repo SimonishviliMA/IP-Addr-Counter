@@ -18,7 +18,7 @@ public class IPv4QueueReaderService implements Callable<Long> {
                     ipAddrContainer.set(ip);
                 }
             }
-            System.out.println();
+            queue.finish();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

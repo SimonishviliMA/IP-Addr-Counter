@@ -7,7 +7,11 @@ public class TransportBlockingQueue {
 
     private static TransportBlockingQueue instance = null;
 
-    private final BlockingQueue<Long> queue = new LinkedBlockingQueue<>();
+    private final IPv4BlockingQueue queue = new IPv4BlockingQueue(
+            (int)Math.ceil(100_000),
+            0.7,
+            0.3
+    );
 
 
     public static synchronized TransportBlockingQueue getInstance() {
@@ -27,5 +31,9 @@ public class TransportBlockingQueue {
 
     public boolean isNotEmpty() {
         return !queue.isEmpty();
+    }
+
+    public void finish() {
+        queue.finish();
     }
 }

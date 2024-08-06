@@ -1,5 +1,6 @@
 package org.example;
 
+import java.time.LocalTime;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -11,15 +12,17 @@ public class IPv4BlockingQueue {
     private final Lock readLock = new ReentrantLock();
     private final Condition notFull = writeLock.newCondition();
     private final Condition notEmpty = readLock.newCondition();
+
     private final int maxCapacity;
     private final double upperThreshold;
     private final double lowerThreshold;
 
     private final long[] queue;
+    //TODO size should be atomicity
     private final AtomicInteger size = new AtomicInteger();
     private int offset;
     private int nextIndex;
-    //TODO size should be atomicity
+    private boolean finish;
 
     /**
      * Creating IPv4BlockingQueue
@@ -53,6 +56,7 @@ public class IPv4BlockingQueue {
             }
             size.addAndGet(1);
             queue[nextIndex++] = ip;
+//            System.out.println(LocalTime.now() + " put : " + ip);
         } finally {
             writeLock.unlock();
         }
@@ -76,6 +80,7 @@ public class IPv4BlockingQueue {
                 }
             }
             size.addAndGet(-1);
+//            System.out.println(LocalTime.now() + " take : " + queue[offset]);
             return queue[offset++];
         } finally {
             readLock.unlock();
@@ -84,5 +89,10 @@ public class IPv4BlockingQueue {
 
     public boolean isEmpty() {
         return size.get() == 0;
+    }
+
+    public void finish() {
+        finish = true;
+        notEmpty.signalAll();
     }
 }
