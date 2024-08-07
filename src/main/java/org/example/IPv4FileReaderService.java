@@ -79,7 +79,6 @@ public class IPv4FileReaderService implements Runnable {
 
     @Override
     public void run() {
-        System.out.println(this.getClass().getSimpleName() + " : " + Thread.currentThread().getName());
         startRead();
     }
 }

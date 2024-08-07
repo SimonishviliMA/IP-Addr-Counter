@@ -15,12 +15,6 @@ public class Main {
     // полученное число будет местоположением в массиве
     public static void main(String[] args) throws FileNotFoundException {
 
-//        try {
-//            Thread.sleep(20_000);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-
         long startTime = new Date().getTime();
         System.out.println(startTime);
 
@@ -34,13 +28,12 @@ public class Main {
                             PropertyName.FILE_NAME
                     ))
             );
-            executor.submit(frs);
+            Future<?> frsExecutor = executor.submit(frs);
             IPv4QueueReaderService qrService = new IPv4QueueReaderService();
             Future<Long> qrExecutor = executor.submit(qrService);
             //TODO надо заменить на нормальное завершение
-            while (!qrExecutor.isDone()) {
+            while (!frsExecutor.isDone()) {
                 //ignored
-                Thread.sleep(300);
             }
             qrService.finishProcess();
             //TODO надо заменить на нормальное завершение

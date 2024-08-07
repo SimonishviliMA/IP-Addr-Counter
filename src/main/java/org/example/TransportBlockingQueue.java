@@ -8,7 +8,7 @@ public class TransportBlockingQueue {
     private static TransportBlockingQueue instance = null;
 
     private final IPv4BlockingQueue queue = new IPv4BlockingQueue(
-            (int)Math.ceil(100_000),
+            100_000,
             0.7,
             0.3
     );
