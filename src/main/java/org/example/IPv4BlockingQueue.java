@@ -8,10 +8,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class IPv4BlockingQueue {
 
-    private final Lock writeLock = new ReentrantLock();
-    private final Lock readLock = new ReentrantLock();
-    private final Condition notFull = writeLock.newCondition();
-    private final Condition notEmpty = readLock.newCondition();
+    private final Lock lock = new ReentrantLock();
+    private final Condition notFull = lock.newCondition();
+    private final Condition notEmpty = lock.newCondition();
 
     private final int maxCapacity;
     private final double upperThreshold;
@@ -22,7 +21,6 @@ public class IPv4BlockingQueue {
     private final AtomicInteger size = new AtomicInteger();
     private int offset;
     private int nextIndex;
-    private boolean finish;
 
     /**
      * Creating IPv4BlockingQueue
@@ -38,52 +36,49 @@ public class IPv4BlockingQueue {
 
 
     public void put(long ip) throws InterruptedException {
-        writeLock.lock();
+        lock.lock();
         try {
             while (size.get() == maxCapacity) {
                 notFull.await();
             }
+
             if (nextIndex > maxCapacity * upperThreshold) {
                 nextIndex = 0;
             }
-            if (size.get() >= maxCapacity * upperThreshold) {
-                readLock.lock();
-                try {
-                    notEmpty.signalAll();
-                } finally {
-                    readLock.unlock();
-                }
-            }
-            size.addAndGet(1);
+
             queue[nextIndex++] = ip;
+            size.addAndGet(1);
+
+            if (size.get() >= maxCapacity * upperThreshold) {
+                notEmpty.signalAll();
+            }
 //            System.out.println(LocalTime.now() + " put : " + ip);
         } finally {
-            writeLock.unlock();
+            lock.unlock();
         }
     }
 
     public long take() throws InterruptedException {
-        readLock.lock();
+        lock.lock();
         try {
             while (size.get() <= 0) {
                 notEmpty.await();
             }
-            if (offset > maxCapacity * upperThreshold) {
+
+            if (offset >= maxCapacity * upperThreshold) {
                 offset = 0;
             }
-            if (size.get() <= maxCapacity * lowerThreshold) {
-                writeLock.lock();
-                try {
-                    notFull.signalAll();
-                } finally {
-                    writeLock.unlock();
-                }
-            }
+
             size.addAndGet(-1);
+            long ip = queue[offset++];
+
+            if (size.get() < maxCapacity * lowerThreshold) {
+                notFull.signalAll();
+            }
 //            System.out.println(LocalTime.now() + " take : " + queue[offset]);
-            return queue[offset++];
+            return ip;
         } finally {
-            readLock.unlock();
+            lock.unlock();
         }
     }
 
@@ -92,7 +87,6 @@ public class IPv4BlockingQueue {
     }
 
     public void finish() {
-        finish = true;
         notEmpty.signalAll();
     }
 }
