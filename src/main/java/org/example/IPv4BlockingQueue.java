@@ -12,8 +12,7 @@ public class IPv4BlockingQueue {
     private final Condition queueFullCondition = lock.newCondition();
     private final Condition queueEmptyCondition = lock.newCondition();
 
-    private final int upperThreshold;
-    private final int lowerThreshold;
+    private final int maxCapacity;
     private final int delta;
 
     private final long[] queue;
@@ -23,34 +22,29 @@ public class IPv4BlockingQueue {
     private int nextIndex;
     private boolean finish;
 
-    /**
-     * Creating IPv4BlockingQueue
-     * @param percentOfUpperThreshold - percent from Integer.MAX_VALUE that is max value of elements in queue. Should be from 0.0 to 1.0
-     * @param percentOfLowerThreshold - percent from Integer.MAX_VALUE that is min value of elements in queue. Should be from 0.0 to 1.0
-     */
-    //TODO добавить валидацию
-    public IPv4BlockingQueue(int maxCapacity, double percentOfUpperThreshold, double percentOfLowerThreshold) {
-        this.upperThreshold = (int) Math.ceil(maxCapacity * percentOfUpperThreshold);
-        this.lowerThreshold = (int) Math.ceil(maxCapacity * percentOfLowerThreshold);
+
+    //TODO добавить валидацию и описание delta
+    public IPv4BlockingQueue(int maxCapacity, int delta) {
+        this.maxCapacity = maxCapacity;
         this.queue = new long[maxCapacity];
-        this.delta = ((upperThreshold - lowerThreshold) / 3);
+        this.delta = delta;
     }
 
 
     public void put(long ip) throws InterruptedException {
         lock.lock();
         try {
-            while (size.get() > upperThreshold) {
+            while (size.get() > maxCapacity - 1) {
                 queueFullCondition.await();
             }
 
-            if (nextIndex > upperThreshold) {
+            if (nextIndex > maxCapacity - 1) {
                 nextIndex = 0;
             }
 
             queue[nextIndex++] = ip;
             size.addAndGet(1);
-            if (size.get() >= lowerThreshold + delta) {
+            if (size.get() >= delta) {
                 lock.lock();
                 try {
                     queueEmptyCondition.signalAll();
@@ -66,17 +60,17 @@ public class IPv4BlockingQueue {
     public long take() throws InterruptedException {
         lock.lock();
         try {
-            while (size.get() < lowerThreshold && !finish) {
+            while (size.get() < 0 && !finish) {
                 queueEmptyCondition.await();
             }
 
-            if (offset > upperThreshold) {
+            if (offset > maxCapacity - 1) {
                 offset = 0;
             }
 
             long ip = queue[offset++];
             size.addAndGet(-1);
-            if (size.get() <= upperThreshold - delta) {
+            if (size.get() <= maxCapacity - delta) {
                 lock.lock();
                 try {
                     queueFullCondition.signalAll();

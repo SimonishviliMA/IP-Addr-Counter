@@ -28,16 +28,15 @@ public class Main {
                             PropertyName.FILE_NAME
                     ))
             );
-            Future<?> frsExecutor = executor.submit(frs);
+            Future<Boolean> frsExecutor = executor.submit(frs);
             IPv4QueueReaderService qrService = new IPv4QueueReaderService();
             Future<Long> qrExecutor = executor.submit(qrService);
             //TODO надо заменить на нормальное завершение
-            while (!frsExecutor.isDone()) {
-                //ignored
+            if (frsExecutor.get()) {
+                qrService.finishProcess();
             }
-            qrService.finishProcess();
             //TODO надо заменить на нормальное завершение
-            System.out.println("13 : " + qrExecutor.get());
+            System.out.println("unique ips: " + qrExecutor.get());
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);
         }

@@ -1,5 +1,6 @@
 package org.example;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -8,9 +9,8 @@ public class TransportBlockingQueue {
     private static TransportBlockingQueue instance = null;
 
     private final IPv4BlockingQueue queue = new IPv4BlockingQueue(
-            100_000,
-            0.7,
-            0.3
+            (int) (4_294_967_296L / 5),
+            500_000
     );
 
 
@@ -30,10 +30,15 @@ public class TransportBlockingQueue {
     }
 
     public boolean isNotEmpty() {
-        return !queue.isEmpty();
+        boolean empty = queue.isEmpty();
+        if (empty) {
+            System.out.println("queue is empty. Time : " + LocalDateTime.now());
+        }
+        return !empty;
     }
 
     public void finish() {
         queue.finish();
+        System.out.println("Process finished. Time : " + LocalDateTime.now());
     }
 }

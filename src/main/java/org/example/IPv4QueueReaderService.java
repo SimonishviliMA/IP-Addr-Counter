@@ -1,5 +1,6 @@
 package org.example;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.Callable;
 
 public class IPv4QueueReaderService implements Callable<Long> {
@@ -18,6 +19,7 @@ public class IPv4QueueReaderService implements Callable<Long> {
                     ipAddrContainer.set(ip);
                 }
             }
+            System.out.println("finish = " + finish + " : is queue empty = " + !queue.isNotEmpty() + ". Time : " + LocalDateTime.now());
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

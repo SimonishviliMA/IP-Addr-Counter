@@ -1,9 +1,11 @@
 package org.example;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.concurrent.Callable;
 
-public class IPv4FileReaderService implements Runnable {
+public class IPv4FileReaderService implements Callable<Boolean> {
 
     private static final int MAX_8_BIT_VALUE = 256;
     private static final int MIN_NUMERIC_CHAR_VALUE = 48;
@@ -46,7 +48,7 @@ public class IPv4FileReaderService implements Runnable {
                     ipDecimalNumber = 0;
                     octetLeft = 3;
                     if (countOfElements++ % (double) (Integer.MAX_VALUE / 2) == 0) {
-                        System.out.println(countOfElements);
+                        System.out.println(LocalDateTime.now() + " : " + countOfElements);
                     }
                 }
             } while (ch != -1);
@@ -78,7 +80,9 @@ public class IPv4FileReaderService implements Runnable {
     }
 
     @Override
-    public void run() {
+    public Boolean call() {
         startRead();
+        System.out.println("File ended. Count of elements = " + countOfElements + " Time : " + LocalDateTime.now());
+        return true;
     }
 }
