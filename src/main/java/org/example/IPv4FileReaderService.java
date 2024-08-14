@@ -2,7 +2,6 @@ package org.example;
 
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 public class IPv4FileReaderService implements Callable<Boolean> {
@@ -27,23 +26,20 @@ public class IPv4FileReaderService implements Callable<Boolean> {
         try (BufferedInputStream bis = new BufferedInputStream(src)) {
             int ch;
             long ipDecimalNumber = 0;
-            int[] octetArr = getDefaultOctetArr();
-            int octetArrInd = 0;
+            int octet = 0;
             int octetLeft = 3;
             do {
                 ch = bis.read();
                 if ((ch >= MIN_NUMERIC_CHAR_VALUE && ch <= MAX_NUMERIC_CHAR_VALUE) || ch == DOT_CHAR_VALUE) {
                     if (ch != DOT_CHAR_VALUE) {
-                        octetArr[octetArrInd++] = ch;
+                        octet = (octet * 10) + Character.getNumericValue((char) ch);
                     } else {
-                        ipDecimalNumber += getDecimalNumberOfOctet(getOctet(octetArr), octetLeft--);
-                        octetArr = getDefaultOctetArr();
-                        octetArrInd = 0;
+                        ipDecimalNumber += getDecimalNumberOfOctet(octet, octetLeft--);
+                        octet = 0;
                     }
-                } else if (!Arrays.equals(octetArr, getDefaultOctetArr())) {
-                    ipDecimalNumber += getDecimalNumberOfOctet(getOctet(octetArr), octetLeft);
-                    octetArr = getDefaultOctetArr();
-                    octetArrInd = 0;
+                } else {
+                    ipDecimalNumber += getDecimalNumberOfOctet(octet, octetLeft);
+                    octet = 0;
                     queue.put(ipDecimalNumber);
                     ipDecimalNumber = 0;
                     octetLeft = 3;
@@ -57,26 +53,8 @@ public class IPv4FileReaderService implements Callable<Boolean> {
         }
     }
 
-    private int[] getDefaultOctetArr() {
-        return new int[] {-1, -1, -1};
-    }
-
     private long getDecimalNumberOfOctet(int octet, int octetLeft) {
         return (long) octet * (int) (Math.pow(MAX_8_BIT_VALUE, octetLeft));
-    }
-
-    private int getOctet(int[] octetArr) {
-
-        int octet = 0;
-        int actualLength = octetArr.length - 1;
-        for (int j = actualLength; j >= 0 ; j--) {
-            if (octetArr[j] != -1) {
-                octet += Character.getNumericValue((char) octetArr[j]) * (int) Math.pow(10, actualLength - j);
-            } else {
-                actualLength--;
-            }
-        }
-        return octet;
     }
 
     @Override
