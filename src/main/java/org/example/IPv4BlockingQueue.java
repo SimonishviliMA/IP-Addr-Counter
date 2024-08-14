@@ -1,6 +1,5 @@
 package org.example;
 
-import java.time.LocalTime;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -32,56 +31,56 @@ public class IPv4BlockingQueue {
 
 
     public void put(long ip) throws InterruptedException {
-        lock.lock();
-        try {
-            while (size.get() > maxCapacity - 1) {
+        while (size.get() > maxCapacity - 1) {
+            lock.lock();
+            try {
                 queueFullCondition.await();
+            } finally {
+                lock.unlock();
             }
+        }
 
-            if (nextIndex > maxCapacity - 1) {
-                nextIndex = 0;
-            }
+        if (nextIndex > maxCapacity - 1) {
+            nextIndex = 0;
+        }
 
-            queue[nextIndex++] = ip;
-            size.addAndGet(1);
-            if (size.get() >= delta) {
-                lock.lock();
-                try {
-                    queueEmptyCondition.signalAll();
-                } finally {
-                    lock.unlock();
-                }
+        queue[nextIndex++] = ip;
+        size.addAndGet(1);
+        if (size.get() >= delta) {
+            lock.lock();
+            try {
+                queueEmptyCondition.signalAll();
+            } finally {
+                lock.unlock();
             }
-        } finally {
-            lock.unlock();
         }
     }
 
     public long take() throws InterruptedException {
-        lock.lock();
-        try {
-            while (size.get() < 0 && !finish) {
+        while (size.get() < 0 && !finish) {
+            lock.lock();
+            try {
                 queueEmptyCondition.await();
+            } finally {
+                lock.unlock();
             }
-
-            if (offset > maxCapacity - 1) {
-                offset = 0;
-            }
-
-            long ip = queue[offset++];
-            size.addAndGet(-1);
-            if (size.get() <= maxCapacity - delta) {
-                lock.lock();
-                try {
-                    queueFullCondition.signalAll();
-                } finally {
-                    lock.unlock();
-                }
-            }
-            return ip;
-        } finally {
-            lock.unlock();
         }
+
+        if (offset > maxCapacity - 1) {
+            offset = 0;
+        }
+
+        long ip = queue[offset++];
+        size.addAndGet(-1);
+        if (size.get() <= maxCapacity - delta) {
+            lock.lock();
+            try {
+                queueFullCondition.signalAll();
+            } finally {
+                lock.unlock();
+            }
+        }
+        return ip;
     }
 
     public boolean isEmpty() {
