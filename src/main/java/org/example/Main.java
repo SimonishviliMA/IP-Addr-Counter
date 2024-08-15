@@ -1,7 +1,7 @@
 package org.example;
 
 
-import org.example.property.PropertyName;
+import org.example.property.impl.PropertyName;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

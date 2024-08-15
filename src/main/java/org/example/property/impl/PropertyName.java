@@ -1,4 +1,4 @@
-package org.example.property;
+package org.example.property.impl;
 
 public enum PropertyName {
     FILE_NAME("file.name");

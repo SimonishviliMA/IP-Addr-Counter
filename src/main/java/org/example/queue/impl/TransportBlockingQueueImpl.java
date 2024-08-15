@@ -1,4 +1,6 @@
-package org.example.queue;
+package org.example.queue.impl;
+
+import org.example.queue.TransportBlockingQueue;
 
 import java.time.LocalDateTime;
 

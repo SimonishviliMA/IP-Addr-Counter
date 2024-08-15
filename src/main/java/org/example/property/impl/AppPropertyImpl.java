@@ -1,6 +1,7 @@
-package org.example.property;
+package org.example.property.impl;
 
 import org.example.Main;
+import org.example.property.AppProperty;
 
 import java.io.IOException;
 import java.io.InputStream;

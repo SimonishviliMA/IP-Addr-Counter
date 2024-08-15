@@ -1,9 +1,9 @@
 package org.example;
 
 import org.example.property.AppProperty;
-import org.example.property.AppPropertyImpl;
+import org.example.property.impl.AppPropertyImpl;
 import org.example.queue.TransportBlockingQueue;
-import org.example.queue.TransportBlockingQueueImpl;
+import org.example.queue.impl.TransportBlockingQueueImpl;
 
 public abstract class ObjectFactory {
 
