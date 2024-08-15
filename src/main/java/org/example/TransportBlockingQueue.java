@@ -1,14 +1,15 @@
 package org.example;
 
+import org.example.queue.IPv4BlockingQueue;
+import org.example.queue.IPv4BlockingQueueImpl;
+
 import java.time.LocalDateTime;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class TransportBlockingQueue {
 
     private static TransportBlockingQueue instance = null;
 
-    private final IPv4BlockingQueue queue = new IPv4BlockingQueue(
+    private final IPv4BlockingQueue queue = new IPv4BlockingQueueImpl(
             (int) (4_294_967_296L / 5),
             500_000
     );
