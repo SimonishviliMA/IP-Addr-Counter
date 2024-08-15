@@ -3,6 +3,7 @@ package org.example;
 
 import org.example.property.AppProperty;
 import org.example.property.PropertyName;
+import org.example.queue.TransportBlockingQueueImpl;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,7 +21,6 @@ public class Main {
 
         long startTime = new Date().getTime();
         System.out.println(startTime);
-
 
         init();
 
@@ -50,7 +50,7 @@ public class Main {
 
     private static void init() {
         AppProperty.getInstance();
-        TransportBlockingQueue.getInstance();
+        ObjectFactory.createTransportBlockingQueue();
     }
 
 }

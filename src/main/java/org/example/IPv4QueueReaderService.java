@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.queue.TransportBlockingQueue;
+import org.example.queue.TransportBlockingQueueImpl;
+
 import java.time.LocalDateTime;
 import java.util.concurrent.Callable;
 
@@ -7,7 +10,7 @@ public class IPv4QueueReaderService implements Callable<Long> {
 
     private static final long MAX_POSSIBLE_IPV4_COUNT = 4_294_967_296L;
     private static final IpAddrContainer ipAddrContainer = new IpAddrContainer(MAX_POSSIBLE_IPV4_COUNT);
-    private final TransportBlockingQueue queue = TransportBlockingQueue.getInstance();
+    private final TransportBlockingQueue queue = ObjectFactory.createTransportBlockingQueue();
 
     private boolean finish;
 

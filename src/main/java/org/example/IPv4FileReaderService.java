@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.queue.TransportBlockingQueue;
+
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.concurrent.Callable;
@@ -12,7 +14,7 @@ public class IPv4FileReaderService implements Callable<Boolean> {
     private static final int DOT_CHAR_VALUE = 46;
     private static long countOfElements = 0;
 
-    private final TransportBlockingQueue queue = TransportBlockingQueue.getInstance();
+    private final TransportBlockingQueue queue = ObjectFactory.createTransportBlockingQueue();
 
     private final FileInputStream src;
 
