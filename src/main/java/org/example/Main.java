@@ -24,8 +24,6 @@ public class Main {
         long startTime = new Date().getTime();
         System.out.println(startTime);
 
-        init();
-
         try (ExecutorService executor = Executors.newFixedThreadPool(2)) {
 
             IPv4FileReaderService frs = new IPv4FileReaderServiceImpl(
@@ -47,12 +45,6 @@ public class Main {
         }
 
         System.out.println(new Date().getTime() - startTime);
-    }
-
-
-    private static void init() {
-        ObjectFactory.createAppProperty();
-        ObjectFactory.createTransportBlockingQueue();
     }
 
 }

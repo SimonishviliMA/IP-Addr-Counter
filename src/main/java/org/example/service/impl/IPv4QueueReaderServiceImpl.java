@@ -1,6 +1,5 @@
 package org.example.service.impl;
 
-import org.example.IpAddrContainer;
 import org.example.ObjectFactory;
 import org.example.queue.TransportBlockingQueue;
 import org.example.service.IPv4QueueReaderService;

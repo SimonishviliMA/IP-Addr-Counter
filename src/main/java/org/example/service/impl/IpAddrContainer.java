@@ -1,8 +1,8 @@
-package org.example;
+package org.example.service.impl;
 
 import java.util.BitSet;
 
-public class IpAddrContainer {
+class IpAddrContainer {
 
     private final BitSet[] bits;
 
@@ -11,7 +11,7 @@ public class IpAddrContainer {
 
     private long sizeOfUniqueIPs = 0;
 
-    public IpAddrContainer(long maxPossibleIPCount) {
+    protected IpAddrContainer(long maxPossibleIPCount) {
         long countOfElements = maxPossibleIPCount;
         this.maxSizeOfBitSet = Integer.MAX_VALUE;
         double floatSizeOfBitSetArray = (double) countOfElements / maxSizeOfBitSet;
@@ -35,7 +35,7 @@ public class IpAddrContainer {
         this.minSizeOfBitSet = bits[i].length();
     }
 
-    public void set(long bitInd) {
+    protected void set(long bitInd) {
         int indOfArray = 0;
         if (bitInd != 0) {
             indOfArray = (int) Math.ceil((double) (bitInd / maxSizeOfBitSet));
@@ -58,7 +58,7 @@ public class IpAddrContainer {
         }
     }
 
-    public long getSizeOfUniqueIPs() {
+    protected long getSizeOfUniqueIPs() {
         return sizeOfUniqueIPs;
     }
 
