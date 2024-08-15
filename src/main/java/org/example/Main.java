@@ -25,7 +25,7 @@ public class Main {
         try (ExecutorService executor = Executors.newFixedThreadPool(2)) {
 
             IPv4FileReaderService frs = new IPv4FileReaderServiceImpl(
-                    new FileInputStream(ObjectFactory.createAppProperty().getProperty(
+                    new FileInputStream(SingletonObjectFactory.getInstanceOfAppProperty().getProperty(
                             PropertyName.FILE_NAME
                     ))
             );

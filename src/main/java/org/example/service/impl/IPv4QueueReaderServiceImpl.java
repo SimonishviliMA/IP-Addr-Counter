@@ -1,6 +1,6 @@
 package org.example.service.impl;
 
-import org.example.ObjectFactory;
+import org.example.SingletonObjectFactory;
 import org.example.queue.TransportBlockingQueue;
 import org.example.service.IPv4QueueReaderService;
 
@@ -10,7 +10,7 @@ public class IPv4QueueReaderServiceImpl implements IPv4QueueReaderService {
 
     private static final long MAX_POSSIBLE_IPV4_COUNT = 4_294_967_296L;
     private static final IpAddrContainer ipAddrContainer = new IpAddrContainer(MAX_POSSIBLE_IPV4_COUNT);
-    private final TransportBlockingQueue queue = ObjectFactory.createTransportBlockingQueue();
+    private final TransportBlockingQueue queue = SingletonObjectFactory.getInstanceOfTransportBlockingQueue();
 
     private boolean finish;
 

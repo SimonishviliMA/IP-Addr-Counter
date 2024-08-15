@@ -1,6 +1,6 @@
 package org.example.queue.impl;
 
-import org.example.ObjectFactory;
+import org.example.SingletonObjectFactory;
 import org.example.property.impl.PropertyName;
 import org.example.queue.TransportBlockingQueue;
 
@@ -11,8 +11,8 @@ public class TransportBlockingQueueImpl implements TransportBlockingQueue {
     private static TransportBlockingQueueImpl instance = null;
 
     private final IPv4BlockingQueue queue = new IPv4BlockingQueue(
-            Integer.parseInt(ObjectFactory.createAppProperty().getProperty(PropertyName.QUEUE_MAX_CAPACITY)),
-            Integer.parseInt(ObjectFactory.createAppProperty().getProperty(PropertyName.QUEUE_DELTA))
+            Integer.parseInt(SingletonObjectFactory.getInstanceOfAppProperty().getProperty(PropertyName.QUEUE_MAX_CAPACITY)),
+            Integer.parseInt(SingletonObjectFactory.getInstanceOfAppProperty().getProperty(PropertyName.QUEUE_DELTA))
     );
 
 

@@ -1,6 +1,6 @@
 package org.example.service.impl;
 
-import org.example.ObjectFactory;
+import org.example.SingletonObjectFactory;
 import org.example.queue.TransportBlockingQueue;
 import org.example.service.IPv4FileReaderService;
 
@@ -15,7 +15,7 @@ public class IPv4FileReaderServiceImpl implements IPv4FileReaderService {
     private static final int DOT_CHAR_VALUE = 46;
     private static long countOfElements = 0;
 
-    private final TransportBlockingQueue queue = ObjectFactory.createTransportBlockingQueue();
+    private final TransportBlockingQueue queue = SingletonObjectFactory.getInstanceOfTransportBlockingQueue();
 
     private final FileInputStream src;
 
