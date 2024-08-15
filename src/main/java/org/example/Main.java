@@ -17,8 +17,6 @@ import java.util.concurrent.Future;
 
 public class Main {
 
-    //TODO можно сделать чтение по байтам, найти значение точки и игнорировать его при сборке,
-    // полученное число будет местоположением в массиве
     public static void main(String[] args) throws FileNotFoundException {
 
         long startTime = new Date().getTime();

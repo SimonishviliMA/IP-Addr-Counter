@@ -1,5 +1,7 @@
 package org.example.queue.impl;
 
+import org.example.ObjectFactory;
+import org.example.property.impl.PropertyName;
 import org.example.queue.TransportBlockingQueue;
 
 import java.time.LocalDateTime;
@@ -10,8 +12,8 @@ public class TransportBlockingQueueImpl implements TransportBlockingQueue {
 
     //TODO убрать хардкодинг значений
     private final IPv4BlockingQueue queue = new IPv4BlockingQueue(
-            (int) (4_294_967_296L / 5),
-            500_000
+            Integer.parseInt(ObjectFactory.createAppProperty().getProperty(PropertyName.QUEUE_MAX_CAPACITY)),
+            Integer.parseInt(ObjectFactory.createAppProperty().getProperty(PropertyName.QUEUE_DELTA))
     );
 
 
