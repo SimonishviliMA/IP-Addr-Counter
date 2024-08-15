@@ -32,11 +32,11 @@ public class Main {
             Future<Boolean> frsExecutor = executor.submit(frs);
             IPv4QueueReaderService qrService = new IPv4QueueReaderServiceImpl();
             Future<Long> qrExecutor = executor.submit(qrService);
-            //TODO надо заменить на нормальное завершение
+
             if (frsExecutor.get()) {
                 qrService.finishProcess();
             }
-            //TODO надо заменить на нормальное завершение
+
             System.out.println("unique ips: " + qrExecutor.get());
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException(e);

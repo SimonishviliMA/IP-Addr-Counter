@@ -16,7 +16,6 @@ public class AppPropertyImpl implements AppProperty {
     private AppPropertyImpl() {
         try (InputStream input = Main.class.getClassLoader().getResourceAsStream("config.properties")) {
 
-            //TODO переписать, слишком спизжена и добавить ошибку
             if (input == null) {
                 System.out.println("Sorry, unable to find config.properties");
                 throw new RuntimeException();

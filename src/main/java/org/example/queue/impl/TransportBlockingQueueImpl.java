@@ -10,7 +10,6 @@ public class TransportBlockingQueueImpl implements TransportBlockingQueue {
 
     private static TransportBlockingQueueImpl instance = null;
 
-    //TODO убрать хардкодинг значений
     private final IPv4BlockingQueue queue = new IPv4BlockingQueue(
             Integer.parseInt(ObjectFactory.createAppProperty().getProperty(PropertyName.QUEUE_MAX_CAPACITY)),
             Integer.parseInt(ObjectFactory.createAppProperty().getProperty(PropertyName.QUEUE_DELTA))

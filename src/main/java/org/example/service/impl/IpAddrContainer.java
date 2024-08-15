@@ -41,15 +41,17 @@ class IpAddrContainer {
             indOfArray = (int) Math.ceil((double) (bitInd / maxSizeOfBitSet));
         }
         if (indOfArray > bits.length) {
-            //TODO выход за пределы массива битов
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException(
+                    "Out of bounds the BitSet array. Length of array = " + bits.length + ", index = " + indOfArray
+            );
         }
 
         int indOfBitSet = (int) (bitInd - (maxSizeOfBitSet * indOfArray));
         if (bits.length == indOfArray) {
             if (indOfBitSet > minSizeOfBitSet) {
-                //TODO выход за пределы сета битов
-                throw new IndexOutOfBoundsException();
+                throw new IndexOutOfBoundsException(
+                        "Out of bounds the BitSet. Length of BitSet = " + bits.length + ", index = " + indOfBitSet
+                );
             }
         }
         if (!bits[indOfArray].get(indOfBitSet)) {
