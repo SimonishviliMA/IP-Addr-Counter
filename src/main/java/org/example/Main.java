@@ -1,9 +1,7 @@
 package org.example;
 
 
-import org.example.property.AppProperty;
 import org.example.property.PropertyName;
-import org.example.queue.TransportBlockingQueueImpl;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,7 +25,7 @@ public class Main {
         try (ExecutorService executor = Executors.newFixedThreadPool(2)) {
 
             IPv4FileReaderService frs = new IPv4FileReaderService(
-                    new FileInputStream(AppProperty.getInstance().getProperty(
+                    new FileInputStream(ObjectFactory.createAppProperty().getProperty(
                             PropertyName.FILE_NAME
                     ))
             );
@@ -49,7 +47,7 @@ public class Main {
 
 
     private static void init() {
-        AppProperty.getInstance();
+        ObjectFactory.createAppProperty();
         ObjectFactory.createTransportBlockingQueue();
     }
 
