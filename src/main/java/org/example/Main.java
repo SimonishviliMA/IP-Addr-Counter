@@ -20,7 +20,6 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
 
         long startTime = new Date().getTime();
-        System.out.println(startTime);
 
         try (ExecutorService executor = Executors.newFixedThreadPool(2)) {
 
@@ -42,7 +41,7 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        System.out.println(new Date().getTime() - startTime);
+        System.out.println("Program is finished. Time is " + (new Date().getTime() - startTime) + " ms.");
     }
 
 }

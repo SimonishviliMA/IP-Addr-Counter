@@ -4,8 +4,6 @@ import org.example.SingletonObjectFactory;
 import org.example.queue.TransportBlockingQueue;
 import org.example.service.IPv4QueueReaderService;
 
-import java.time.LocalDateTime;
-
 public class IPv4QueueReaderServiceImpl implements IPv4QueueReaderService {
 
     private static final long MAX_POSSIBLE_IPV4_COUNT = 4_294_967_296L;
@@ -22,7 +20,6 @@ public class IPv4QueueReaderServiceImpl implements IPv4QueueReaderService {
                     ipAddrContainer.set(ip);
                 }
             }
-            System.out.println("finish = " + finish + " : is queue empty = " + !queue.isNotEmpty() + ". Time : " + LocalDateTime.now());
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

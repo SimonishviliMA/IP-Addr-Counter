@@ -4,8 +4,6 @@ import org.example.SingletonObjectFactory;
 import org.example.property.impl.PropertyName;
 import org.example.queue.TransportBlockingQueue;
 
-import java.time.LocalDateTime;
-
 public class TransportBlockingQueueImpl implements TransportBlockingQueue {
 
     private static TransportBlockingQueueImpl instance = null;
@@ -44,11 +42,7 @@ public class TransportBlockingQueueImpl implements TransportBlockingQueue {
      */
     @Override
     public boolean isNotEmpty() {
-        boolean empty = queue.isEmpty();
-        if (empty) {
-            System.out.println("queue is empty. Time : " + LocalDateTime.now());
-        }
-        return !empty;
+        return !queue.isEmpty();
     }
 
     /**
@@ -57,6 +51,5 @@ public class TransportBlockingQueueImpl implements TransportBlockingQueue {
     @Override
     public void finish() {
         queue.finish();
-        System.out.println("Process finished. Time : " + LocalDateTime.now());
     }
 }

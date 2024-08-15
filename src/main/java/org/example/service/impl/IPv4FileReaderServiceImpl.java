@@ -5,7 +5,6 @@ import org.example.queue.TransportBlockingQueue;
 import org.example.service.IPv4FileReaderService;
 
 import java.io.*;
-import java.time.LocalDateTime;
 
 public class IPv4FileReaderServiceImpl implements IPv4FileReaderService {
 
@@ -13,7 +12,6 @@ public class IPv4FileReaderServiceImpl implements IPv4FileReaderService {
     private static final int MIN_NUMERIC_CHAR_VALUE = 48;
     private static final int MAX_NUMERIC_CHAR_VALUE = 57;
     private static final int DOT_CHAR_VALUE = 46;
-    private static long countOfElements = 0;
 
     private final TransportBlockingQueue queue = SingletonObjectFactory.getInstanceOfTransportBlockingQueue();
 
@@ -46,9 +44,6 @@ public class IPv4FileReaderServiceImpl implements IPv4FileReaderService {
                     queue.put(ipDecimalNumber);
                     ipDecimalNumber = 0;
                     octetLeft = 3;
-                    if (countOfElements++ % (double) (Integer.MAX_VALUE / 2) == 0) {
-                        System.out.println(LocalDateTime.now() + " : " + countOfElements);
-                    }
                 }
             } while (ch != -1);
         } catch (IOException | InterruptedException e) {
@@ -63,7 +58,6 @@ public class IPv4FileReaderServiceImpl implements IPv4FileReaderService {
     @Override
     public Boolean call() {
         startRead();
-        System.out.println("File ended. Count of elements = " + countOfElements + " Time : " + LocalDateTime.now());
         return true;
     }
 }
