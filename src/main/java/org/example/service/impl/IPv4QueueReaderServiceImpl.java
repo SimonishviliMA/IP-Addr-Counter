@@ -1,11 +1,13 @@
-package org.example;
+package org.example.service.impl;
 
+import org.example.IpAddrContainer;
+import org.example.ObjectFactory;
 import org.example.queue.TransportBlockingQueue;
+import org.example.service.IPv4QueueReaderService;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.Callable;
 
-public class IPv4QueueReaderService implements Callable<Long> {
+public class IPv4QueueReaderServiceImpl implements IPv4QueueReaderService {
 
     private static final long MAX_POSSIBLE_IPV4_COUNT = 4_294_967_296L;
     private static final IpAddrContainer ipAddrContainer = new IpAddrContainer(MAX_POSSIBLE_IPV4_COUNT);
@@ -27,6 +29,10 @@ public class IPv4QueueReaderService implements Callable<Long> {
         }
     }
 
+    /**
+     * Finishing reader process
+     */
+    @Override
     public void finishProcess() {
         finish = true;
         queue.finish();

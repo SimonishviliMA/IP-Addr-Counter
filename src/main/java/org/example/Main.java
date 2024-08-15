@@ -2,6 +2,10 @@ package org.example;
 
 
 import org.example.property.impl.PropertyName;
+import org.example.service.IPv4FileReaderService;
+import org.example.service.IPv4QueueReaderService;
+import org.example.service.impl.IPv4FileReaderServiceImpl;
+import org.example.service.impl.IPv4QueueReaderServiceImpl;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,13 +28,13 @@ public class Main {
 
         try (ExecutorService executor = Executors.newFixedThreadPool(2)) {
 
-            IPv4FileReaderService frs = new IPv4FileReaderService(
+            IPv4FileReaderService frs = new IPv4FileReaderServiceImpl(
                     new FileInputStream(ObjectFactory.createAppProperty().getProperty(
                             PropertyName.FILE_NAME
                     ))
             );
             Future<Boolean> frsExecutor = executor.submit(frs);
-            IPv4QueueReaderService qrService = new IPv4QueueReaderService();
+            IPv4QueueReaderService qrService = new IPv4QueueReaderServiceImpl();
             Future<Long> qrExecutor = executor.submit(qrService);
             //TODO надо заменить на нормальное завершение
             if (frsExecutor.get()) {

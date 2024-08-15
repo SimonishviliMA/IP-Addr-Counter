@@ -1,12 +1,13 @@
-package org.example;
+package org.example.service.impl;
 
+import org.example.ObjectFactory;
 import org.example.queue.TransportBlockingQueue;
+import org.example.service.IPv4FileReaderService;
 
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.concurrent.Callable;
 
-public class IPv4FileReaderService implements Callable<Boolean> {
+public class IPv4FileReaderServiceImpl implements IPv4FileReaderService {
 
     private static final int MAX_8_BIT_VALUE = 256;
     private static final int MIN_NUMERIC_CHAR_VALUE = 48;
@@ -18,7 +19,7 @@ public class IPv4FileReaderService implements Callable<Boolean> {
 
     private final FileInputStream src;
 
-    public IPv4FileReaderService(FileInputStream src) {
+    public IPv4FileReaderServiceImpl(FileInputStream src) {
         this.src = src;
     }
 
