@@ -1,4 +1,6 @@
-package org.example;
+package org.example.property;
+
+import org.example.Main;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +32,9 @@ public class AppProperty {
         }
     }
 
+    /**
+     * @return instance of AppProperty
+     */
     public static AppProperty getInstance() {
         if (instance == null) {
             return instance = new AppProperty();
@@ -37,6 +42,10 @@ public class AppProperty {
         return instance;
     }
 
+    /**
+     * @param propertyName - name of property which contains in {@link PropertyName}
+     * @return value of that property in config.properties file
+     */
     public String getProperty(PropertyName propertyName) {
         return properties.getProperty(propertyName.getName());
     }

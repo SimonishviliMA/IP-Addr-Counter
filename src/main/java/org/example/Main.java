@@ -1,6 +1,9 @@
 package org.example;
 
 
+import org.example.property.AppProperty;
+import org.example.property.PropertyName;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Date;
