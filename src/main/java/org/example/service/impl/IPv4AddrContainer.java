@@ -1,26 +1,26 @@
 package org.example.service.impl;
 
 import java.util.BitSet;
+import java.util.concurrent.atomic.AtomicLong;
 
-class IpAddrContainer {
+public class IPv4AddrContainer {
+
+    private static final long MAX_POSSIBLE_IPV4_QUANTITY = 4_294_967_296L;
+
+    private static IPv4AddrContainer instance = null;
 
     private final BitSet[] bits;
 
     private final int maxSizeOfBitSet;
     private final int minSizeOfBitSet;
 
-    private long sizeOfUniqueIPs = 0;
+    private final AtomicLong sizeOfUniqueIPs = new AtomicLong();
 
-    protected IpAddrContainer(long maxPossibleIPCount) {
-        long countOfElements = maxPossibleIPCount;
+    private IPv4AddrContainer() {
+        long countOfElements = MAX_POSSIBLE_IPV4_QUANTITY;
         this.maxSizeOfBitSet = Integer.MAX_VALUE;
-        double floatSizeOfBitSetArray = (double) countOfElements / maxSizeOfBitSet;
 
-        int sizeOfBitSetArray = (
-                floatSizeOfBitSetArray % 1 == 0 ?
-                        (int) floatSizeOfBitSetArray :
-                        (int) floatSizeOfBitSetArray + 1
-        );
+        int sizeOfBitSetArray = (int) (countOfElements / maxSizeOfBitSet) + 1;
         bits = new BitSet[sizeOfBitSetArray];
         int i = 0;
         while (countOfElements > 0) {
@@ -33,6 +33,13 @@ class IpAddrContainer {
             }
         }
         this.minSizeOfBitSet = bits[i].length();
+    }
+
+    public static IPv4AddrContainer getInstance() {
+        if (instance == null) {
+            instance = new IPv4AddrContainer();
+        }
+        return instance;
     }
 
     protected void set(long bitInd) {
@@ -56,12 +63,12 @@ class IpAddrContainer {
         }
         if (!bits[indOfArray].get(indOfBitSet)) {
             bits[indOfArray].set(indOfBitSet);
-            sizeOfUniqueIPs++;
+            sizeOfUniqueIPs.incrementAndGet();
         }
     }
 
-    protected long getSizeOfUniqueIPs() {
-        return sizeOfUniqueIPs;
+    public long getSizeOfUniqueIPs() {
+        return sizeOfUniqueIPs.get();
     }
 
 }
