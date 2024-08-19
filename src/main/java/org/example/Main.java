@@ -1,10 +1,12 @@
 package org.example;
 
 
+import org.example.factory.SingletonObjectFactory;
+import org.example.property.AppProperty;
 import org.example.property.impl.PropertyName;
+import org.example.service.IPv4AddrContainer;
 import org.example.service.IPv4FileReaderService;
 import org.example.service.impl.IPv4FileReaderServiceImpl;
-import org.example.service.impl.IPv4AddrContainer;
 
 import java.io.File;
 import java.util.Date;
@@ -15,6 +17,10 @@ import java.util.concurrent.Future;
 
 public class Main {
 
+
+    private static IPv4AddrContainer iPv4AddrContainer;
+    private static AppProperty appProperty;
+
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
 
@@ -22,16 +28,14 @@ public class Main {
 
         init();
 
-        int quantityOfThreads = Integer.parseInt(
-                SingletonObjectFactory.getInstanceOfAppProperty().getProperty(
-                        PropertyName.QUANTITY_OF_THREADS
-                )
-        );
+        int quantityOfThreads = Integer.parseInt(appProperty.getProperty(
+                PropertyName.QUANTITY_OF_THREADS
+        ));
 
         try (ExecutorService executor = Executors.newFixedThreadPool(quantityOfThreads)) {
 
             Object[] frsTasks = new Object[quantityOfThreads];
-            File ipv4File = new File(SingletonObjectFactory.getInstanceOfAppProperty().getProperty(
+            File ipv4File = new File(appProperty.getProperty(
                     PropertyName.FILE_NAME
             ));
             for (int i = 0; i < quantityOfThreads; i++) {
@@ -50,13 +54,14 @@ public class Main {
         }
 
         System.out.println(
-                "Quantity of unique ips = " + IPv4AddrContainer.getInstance().getSizeOfUniqueIPs() +
+                "Quantity of unique ips = " + iPv4AddrContainer.getSizeOfUniqueIPs() +
                 "\nProgram is finished. Time is " + (new Date().getTime() - startTime) + " ms."
         );
     }
 
     private static void init() {
-        IPv4AddrContainer.getInstance();
+        iPv4AddrContainer = SingletonObjectFactory.getInstanceOfIPv4AddrContainer();
+        appProperty = SingletonObjectFactory.getInstanceOfAppProperty();
     }
 
 }

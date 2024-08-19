@@ -17,8 +17,7 @@ public class AppPropertyImpl implements AppProperty {
         try (InputStream input = Main.class.getClassLoader().getResourceAsStream("config.properties")) {
 
             if (input == null) {
-                System.out.println("Sorry, unable to find config.properties");
-                throw new RuntimeException();
+                throw new RuntimeException("Sorry, unable to find config.properties");
             }
 
             Properties properties = new Properties();
@@ -35,7 +34,7 @@ public class AppPropertyImpl implements AppProperty {
     /**
      * @return instance of AppProperty
      */
-    public static AppPropertyImpl getInstance() {
+    public synchronized static AppPropertyImpl getInstance() {
         if (instance == null) {
             return instance = new AppPropertyImpl();
         }

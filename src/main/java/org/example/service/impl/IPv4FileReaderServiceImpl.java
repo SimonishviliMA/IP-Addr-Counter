@@ -1,5 +1,7 @@
 package org.example.service.impl;
 
+import org.example.factory.SingletonObjectFactory;
+import org.example.service.IPv4AddrContainer;
 import org.example.service.IPv4FileReaderService;
 
 import java.io.*;
@@ -12,7 +14,7 @@ public class IPv4FileReaderServiceImpl implements IPv4FileReaderService {
     private static final int DOT_CHAR_VALUE = 46;
     private static final int NEXT_LINE_VALUE = 10;
 
-    private final IPv4AddrContainer ipv4AddrContainer = IPv4AddrContainer.getInstance();
+    private final IPv4AddrContainer ipv4AddrContainer = SingletonObjectFactory.getInstanceOfIPv4AddrContainer();
 
     private final File src;
 
