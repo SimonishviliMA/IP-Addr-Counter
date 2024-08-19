@@ -15,8 +15,6 @@ public class IPv4AddrContainerImpl implements IPv4AddrContainer {
     private final int maxSizeOfBitSet;
     private final int minSizeOfBitSet;
 
-    private long sizeOfUniqueIPs = 0;
-
     private IPv4AddrContainerImpl() {
         long countOfElements = MAX_POSSIBLE_IPV4_QUANTITY;
         this.maxSizeOfBitSet = Integer.MAX_VALUE;
@@ -65,15 +63,16 @@ public class IPv4AddrContainerImpl implements IPv4AddrContainer {
         }
 
         synchronized (this) {
-            if (!bits[indOfArray].get(indOfBitSet)) {
-                bits[indOfArray].set(indOfBitSet);
-                sizeOfUniqueIPs++;
-            }
+            bits[indOfArray].set(indOfBitSet);
         }
     }
 
     @Override
     public long getSizeOfUniqueIPs() {
+        long sizeOfUniqueIPs = 0L;
+        for (BitSet bitSet : bits) {
+            sizeOfUniqueIPs += bitSet.cardinality();
+        }
         return sizeOfUniqueIPs;
     }
 
