@@ -6,6 +6,9 @@ import org.example.service.IPv4FileReaderService;
 
 import java.io.*;
 
+/**
+ * Service for reading file which contains IPv4 IPs listed line by line
+ */
 public class IPv4FileReaderServiceImpl implements IPv4FileReaderService {
 
     private static final int MAX_8_BIT_VALUE = 256;

@@ -9,6 +9,9 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Properties;
 
+/**
+ * Gives access to config properties
+ */
 public class AppPropertyImpl implements AppProperty {
 
     private static AppPropertyImpl instance = null;
@@ -36,7 +39,7 @@ public class AppPropertyImpl implements AppProperty {
     }
 
     /**
-     * @return instance of AppProperty
+     * @return Instance of {@link AppProperty}
      */
     public synchronized static AppPropertyImpl getInstance() {
         if (instance == null) {
@@ -44,13 +47,8 @@ public class AppPropertyImpl implements AppProperty {
         }
         return instance;
     }
-
-    /**
-     * @param propertyName - name of property which contains in {@link PropertyName}
-     * @return value of that property in config.properties file
-     */
     public String getProperty(PropertyName propertyName) {
-        return properties.getProperty(propertyName.getName());
+        return properties.getProperty(propertyName.getPropertyPath());
     }
 
     private void checkMandatoryProperties() {
@@ -58,7 +56,7 @@ public class AppPropertyImpl implements AppProperty {
                 .filter(PropertyName::isMandatory)
                 .forEach(propertyName ->
                     Optional.ofNullable(getProperty(propertyName))
-                            .orElseThrow(() -> new RuntimeException("Property " + propertyName.getName() + " is mandatory. Please check your config file"))
+                            .orElseThrow(() -> new RuntimeException("Property " + propertyName.getPropertyPath() + " is mandatory. Please check your config file"))
                 );
     }
 }

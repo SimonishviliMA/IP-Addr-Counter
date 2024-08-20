@@ -17,7 +17,6 @@ import java.util.concurrent.Future;
 
 public class Main {
 
-
     private static IPv4AddrContainer iPv4AddrContainer;
     private static AppProperty appProperty;
 
@@ -54,7 +53,7 @@ public class Main {
         }
 
         System.out.println(
-                "Quantity of unique ips = " + iPv4AddrContainer.getSizeOfUniqueIPs() +
+                "Quantity of unique IPs = " + iPv4AddrContainer.getQuantityOfUniqueIPs() +
                 "\nProgram is finished. Time is " + (new Date().getTime() - startTime) + " ms."
         );
     }

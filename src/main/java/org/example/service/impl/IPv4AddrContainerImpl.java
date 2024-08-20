@@ -4,6 +4,9 @@ import org.example.service.IPv4AddrContainer;
 
 import java.util.BitSet;
 
+/**
+ * Container for collecting IPv4 IPs and summing uniques IPs
+ */
 public class IPv4AddrContainerImpl implements IPv4AddrContainer {
 
     private static final long MAX_POSSIBLE_IPV4_QUANTITY = 4_294_967_296L;
@@ -34,13 +37,15 @@ public class IPv4AddrContainerImpl implements IPv4AddrContainer {
         this.minSizeOfBitSet = bits[i].length();
     }
 
+    /**
+     * @return Instance of {@link IPv4AddrContainer}
+     */
     public synchronized static IPv4AddrContainerImpl getInstance() {
         if (instance == null) {
             instance = new IPv4AddrContainerImpl();
         }
         return instance;
     }
-
     @Override
     public void set(long bitInd) {
         int indOfArray = 0;
@@ -49,7 +54,7 @@ public class IPv4AddrContainerImpl implements IPv4AddrContainer {
         }
         if (indOfArray > bits.length) {
             throw new IndexOutOfBoundsException(
-                    "Out of bounds the BitSet array. Length of array = " + bits.length + ", index = " + indOfArray
+                    "Out of bounds of the BitSet array. Length of array = " + bits.length + ", index = " + indOfArray
             );
         }
 
@@ -57,7 +62,7 @@ public class IPv4AddrContainerImpl implements IPv4AddrContainer {
         if (bits.length == indOfArray) {
             if (indOfBitSet > minSizeOfBitSet) {
                 throw new IndexOutOfBoundsException(
-                        "Out of bounds the BitSet. Length of BitSet = " + bits.length + ", index = " + indOfBitSet
+                        "Out of bounds of the BitSet. Length of BitSet = " + bits.length + ", index = " + indOfBitSet
                 );
             }
         }
@@ -68,7 +73,7 @@ public class IPv4AddrContainerImpl implements IPv4AddrContainer {
     }
 
     @Override
-    public long getSizeOfUniqueIPs() {
+    public long getQuantityOfUniqueIPs() {
         long sizeOfUniqueIPs = 0L;
         for (BitSet bitSet : bits) {
             sizeOfUniqueIPs += bitSet.cardinality();
