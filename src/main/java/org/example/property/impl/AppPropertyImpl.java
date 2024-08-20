@@ -5,6 +5,8 @@ import org.example.property.AppProperty;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.Properties;
 
 public class AppPropertyImpl implements AppProperty {
@@ -25,6 +27,8 @@ public class AppPropertyImpl implements AppProperty {
             properties.load(input);
 
             this.properties = properties;
+
+            checkMandatoryProperties();
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -47,5 +51,14 @@ public class AppPropertyImpl implements AppProperty {
      */
     public String getProperty(PropertyName propertyName) {
         return properties.getProperty(propertyName.getName());
+    }
+
+    private void checkMandatoryProperties() {
+        Arrays.stream(PropertyName.values())
+                .filter(PropertyName::isMandatory)
+                .forEach(propertyName ->
+                    Optional.ofNullable(getProperty(propertyName))
+                            .orElseThrow(() -> new RuntimeException("Property " + propertyName.getName() + " is mandatory. Please check your config file"))
+                );
     }
 }
