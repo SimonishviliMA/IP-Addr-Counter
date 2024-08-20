@@ -48,7 +48,7 @@ public class AppPropertyImpl implements AppProperty {
         return instance;
     }
     public String getProperty(PropertyName propertyName) {
-        return properties.getProperty(propertyName.getPropertyPath());
+        return properties.getProperty(propertyName.getPropertyKey());
     }
 
     private void checkMandatoryProperties() {
@@ -56,7 +56,7 @@ public class AppPropertyImpl implements AppProperty {
                 .filter(PropertyName::isMandatory)
                 .forEach(propertyName ->
                     Optional.ofNullable(getProperty(propertyName))
-                            .orElseThrow(() -> new RuntimeException("Property " + propertyName.getPropertyPath() + " is mandatory. Please check your config file"))
+                            .orElseThrow(() -> new RuntimeException("Property " + propertyName.getPropertyKey() + " is mandatory. Please check your config file"))
                 );
     }
 }

@@ -7,19 +7,19 @@ public enum PropertyName {
     FILE_NAME("file.name", true),
     QUANTITY_OF_THREADS("threads.quantity", true);
 
-    private final String propertyPath;
+    private final String propertyKey;
     private final boolean mandatory;
 
-    PropertyName(String propertyPath, boolean mandatory) {
-        this.propertyPath = propertyPath;
+    PropertyName(String propertyKey, boolean mandatory) {
+        this.propertyKey = propertyKey;
         this.mandatory = mandatory;
     }
 
     /**
-     * @return Property path
+     * @return Property key
      */
-    public String getPropertyPath() {
-        return propertyPath;
+    public String getPropertyKey() {
+        return propertyKey;
     }
 
     /**
